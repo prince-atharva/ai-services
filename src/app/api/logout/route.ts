@@ -1,3 +1,4 @@
+import { env } from '@/lib/env'
 import { NextResponse } from 'next/server'
 
 export async function POST() {
@@ -7,7 +8,7 @@ export async function POST() {
 
   response.cookies.set('token', '', {
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
+    secure: env.NODE_ENV === 'production',
     sameSite: 'lax',
     path: '/',
     expires: new Date(0),

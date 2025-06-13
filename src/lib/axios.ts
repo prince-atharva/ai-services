@@ -1,4 +1,5 @@
 import axios, { AxiosError, AxiosInstance, AxiosRequestConfig } from 'axios'
+import { Auth } from './api/auth'
 
 class ApiError extends Error {
   constructor(
@@ -13,7 +14,6 @@ class ApiError extends Error {
 
 class Api {
   private instance: AxiosInstance
-
   constructor() {
     this.instance = axios.create({
       baseURL: '/api',
@@ -27,25 +27,22 @@ class Api {
   }
 
   private setupInterceptors() {
-    // Request interceptor
     this.instance.interceptors.request.use(
-      (config) => {
-        // You can add auth token here
-        // const token = localStorage.getItem('token')
-        // if (token) {
-        //   config.headers.Authorization = `Bearer ${token}`
-        // }
+      (config) => { 
         return config
       },
       (error) => Promise.reject(error)
     )
 
-    // Response interceptor
     this.instance.interceptors.response.use(
       (response) => response.data,
-      (error: AxiosError) => {
+      async (error: AxiosError) => {
         if (error.response) {
           const { status, data } = error.response
+          if (status === 401) {
+            await Auth.logout();
+            window.location.href = '/login?sessionExpired=1';
+          }
           throw new ApiError(
             status,
             (data as any)?.error || 'Something went wrong',

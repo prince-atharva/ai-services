@@ -3,6 +3,7 @@ import { NextResponse } from 'next/server'
 import { validateBody, loginSchema } from '@/lib/validations'
 import { comparePassword } from '@/lib/password'
 import { signJwt } from '@/lib/jwt'
+import { env } from '@/lib/env'
 
 export async function POST(request: Request) {
   try {
@@ -38,7 +39,7 @@ export async function POST(request: Request) {
     })
     response.cookies.set('token', token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
+      secure: env.NODE_ENV === 'production',
       sameSite: 'lax',
       path: '/',
     })

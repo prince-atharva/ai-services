@@ -57,9 +57,7 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 flex items-center justify-center px-4 relative">
-      <div className="absolute inset-0 bg-grid-pattern opacity-5 pointer-events-none"></div>
-      
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 flex items-center justify-center px-4 relative">      
       <div className="w-full max-w-md z-10">
         <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8">
           <div className="text-center mb-8">
@@ -86,7 +84,7 @@ export default function RegisterPage() {
                   validationErrors.name ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'
                 } bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200`}
                 placeholder="Enter your full name"
-                autoComplete="name"
+                autoComplete="off"
                 disabled={isLoading}
               />
               {validationErrors.name && (
@@ -108,7 +106,7 @@ export default function RegisterPage() {
                   validationErrors.email ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'
                 } bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200`}
                 placeholder="Enter your email"
-                autoComplete="email"
+                autoComplete="off"
                 disabled={isLoading}
               />
               {validationErrors.email && (
@@ -130,7 +128,7 @@ export default function RegisterPage() {
                   validationErrors.password ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'
                 } bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200`}
                 placeholder="Create a password"
-                autoComplete="new-password"
+                autoComplete="off"
                 disabled={isLoading}
               />
               {validationErrors.password && (
@@ -152,7 +150,7 @@ export default function RegisterPage() {
                   validationErrors.confirmPassword ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'
                 } bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200`}
                 placeholder="Confirm your password"
-                autoComplete="new-password"
+                autoComplete="off"
                 disabled={isLoading}
               />
               {validationErrors.confirmPassword && (

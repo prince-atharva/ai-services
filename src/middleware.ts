@@ -12,7 +12,10 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL('/services', request.url))
   }
 
-  if (!token && protectedPaths.includes(pathname)) {
+  const isProtected =
+    protectedPaths.some((path) => pathname === path || pathname.startsWith(`${path}/`))
+
+  if (!token && isProtected) {
     return NextResponse.redirect(new URL('/', request.url))
   }
 
@@ -20,5 +23,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/', '/login', '/register', '/services'],
+  matcher: ['/', '/login', '/register', '/services', '/services/:path*'],
 } 
