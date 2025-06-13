@@ -16,7 +16,7 @@ const UserHeader: React.FC<UserHeaderProps> = ({ showServicesButton = true }) =>
     try {
       setIsLoading(true);
       await Auth.logout();
-      router.push('/');
+      window.location.href = '/';
     } catch (error) {
       console.error('Logout failed:', error);
     } finally {

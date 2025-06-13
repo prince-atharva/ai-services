@@ -5,7 +5,7 @@ class ApiError extends Error {
   constructor(
     public status: number,
     public message: string,
-    public data?: any
+    public data?: unknown
   ) {
     super(message)
     this.name = 'ApiError'
@@ -45,7 +45,7 @@ class Api {
           }
           throw new ApiError(
             status,
-            (data as any)?.error || 'Something went wrong',
+            (data as { error?: string })?.error || 'Something went wrong',
             data
           )
         }
@@ -58,11 +58,11 @@ class Api {
     return this.instance.get(url, config)
   }
 
-  public async post<T>(url: string, data?: any, config?: AxiosRequestConfig): Promise<T> {
+  public async post<T>(url: string, data?: unknown, config?: AxiosRequestConfig): Promise<T> {
     return this.instance.post(url, data, config)
   }
 
-  public async put<T>(url: string, data?: any, config?: AxiosRequestConfig): Promise<T> {
+  public async put<T>(url: string, data?: unknown, config?: AxiosRequestConfig): Promise<T> {
     return this.instance.put(url, data, config)
   }
 

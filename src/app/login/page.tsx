@@ -1,14 +1,13 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import Link from 'next/link';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import { LoginInput, loginSchema } from '@/lib/validations';
 import { z } from 'zod';
 import { Auth } from '@/lib/api/auth';
 
-export default function LoginPage() {
-  const router = useRouter();
+function LoginPageContent() {
   const searchParams = useSearchParams();
   const [formData, setFormData] = useState<LoginInput>({
     email: '',
@@ -53,7 +52,7 @@ export default function LoginPage() {
     try {
       const validatedData = loginSchema.parse(formData);
       await Auth.login(validatedData.email, validatedData.password);
-      router.push('/services');
+      window.location.href = '/services'
     } catch (error) {
       if (error instanceof z.ZodError) {
         const errors = error.errors.reduce<Partial<LoginInput>>((acc, curr) => ({
@@ -99,9 +98,8 @@ export default function LoginPage() {
                   type="email"
                   value={formData.email}
                   onChange={handleChange}
-                  className={`w-full px-4 py-3 pl-12 rounded-xl border ${
-                    validationErrors.email ? 'border-red-500' : 'border-gray-200 dark:border-gray-700'
-                  } bg-white dark:bg-gray-900 text-gray-900 dark:text-white placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200`}
+                  className={`w-full px-4 py-3 pl-12 rounded-xl border ${validationErrors.email ? 'border-red-500' : 'border-gray-200 dark:border-gray-700'
+                    } bg-white dark:bg-gray-900 text-gray-900 dark:text-white placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200`}
                   placeholder="Enter your email"
                   disabled={isLoading}
                   autoComplete="off"
@@ -128,9 +126,8 @@ export default function LoginPage() {
                   type="password"
                   value={formData.password}
                   onChange={handleChange}
-                  className={`w-full px-4 py-3 pl-12 rounded-xl border ${
-                    validationErrors.password ? 'border-red-500' : 'border-gray-200 dark:border-gray-700'
-                  } bg-white dark:bg-gray-900 text-gray-900 dark:text-white placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200`}
+                  className={`w-full px-4 py-3 pl-12 rounded-xl border ${validationErrors.password ? 'border-red-500' : 'border-gray-200 dark:border-gray-700'
+                    } bg-white dark:bg-gray-900 text-gray-900 dark:text-white placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200`}
                   placeholder="Enter your password"
                   disabled={isLoading}
                   autoComplete="off"
@@ -202,7 +199,7 @@ export default function LoginPage() {
 
             <div className="text-center mt-6">
               <p className="text-sm text-gray-600 dark:text-gray-400">
-                Don't have an account?{' '}
+                Don&apos;t have an account?{' '}
                 <Link
                   href="/register"
                   className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium transition-colors duration-200"
@@ -216,4 +213,12 @@ export default function LoginPage() {
       </main>
     </div>
   );
-} 
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={null}>
+      <LoginPageContent />
+    </Suspense>
+  );
+}

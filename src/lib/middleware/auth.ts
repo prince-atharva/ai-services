@@ -22,7 +22,7 @@ export async function authMiddleware(request: AuthenticatedRequest) {
     const payload = await verifyJwt(token);
     request.user = payload;
     return null;
-  } catch (error) {
+  } catch {
     return NextResponse.json(
       { error: "Unauthorized" },
       { status: 401 }

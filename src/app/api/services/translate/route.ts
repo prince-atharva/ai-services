@@ -70,6 +70,7 @@ export async function POST(request: AuthenticatedRequest) {
     try {
       translatedText = await generateAIContent(prompt);
     } catch (err) {
+      console.error("Translation error:", err);
       return NextResponse.json({ error: ERROR_MESSAGES.TRANSLATION_FAILED }, { status: 500 });
     }
 

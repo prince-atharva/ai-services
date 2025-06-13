@@ -17,7 +17,7 @@ export async function signJwt(payload: TokenPayload): Promise<string> {
 export async function verifyJwt(token: string): Promise<TokenPayload> {
   try {
     return jwt.verify(token, JWT_SECRET) as TokenPayload
-  } catch (error) {
+  } catch {
     throw new Error('Invalid token')
   }
 } 

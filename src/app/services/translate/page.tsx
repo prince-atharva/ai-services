@@ -39,6 +39,7 @@ export default function TranslatePage() {
         const res = await Translate.getTranslations();
         if (isMounted) setHistory(res.translations);
       } catch (err) {
+        console.error("Translation history error:", err);
         if (isMounted) setHistoryError('Failed to load translation history');
       } finally {
         if (isMounted) setIsLoadingHistory(false);
@@ -69,6 +70,7 @@ export default function TranslatePage() {
         ...prev,
       ]);
     } catch (err) {
+      console.error("Translation error:", err);
       setError('Failed to translate text');
     } finally {
       setIsTranslating(false);

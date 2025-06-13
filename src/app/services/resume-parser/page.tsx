@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useRef, useCallback } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import ServicesBackground from '@/app/components/ServicesBackground'
 import UserHeader from '@/app/components/UserHeader'
 import AIServicesHeader from '@/app/components/AIServicesHeader'
@@ -39,11 +39,18 @@ export default function ResumeParserPage() {
   const [error, setError] = useState('');
   const [parsedResume, setParsedResume] = useState<ParsedResume | null>(null);
   const [history, setHistory] = useState<ParsedResume[]>([]);
-  const [isLoadingHistory, setIsLoadingHistory] = useState(false);
-  const [historyError, setHistoryError] = useState('');
+  const [isLoadingHistory] = useState(false);
+  const [historyError] = useState('');
   const [sidebarTab, setSidebarTab] = useState<'history' | 'tips'>('history');
   const [isDragActive, setIsDragActive] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const parsedResumeRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (parsedResume && parsedResumeRef.current) {
+      parsedResumeRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }, [parsedResume]);
 
   const isValidFile = (f: File) => {
     return (
@@ -147,6 +154,7 @@ export default function ResumeParserPage() {
       setParsedResume(mockParsedResume);
       setHistory(prev => [mockParsedResume, ...prev]);
     } catch (err) {
+      console.error("Resume parsing error:", err);
       setError('Failed to parse resume');
     } finally {
       setIsParsing(false);
@@ -290,7 +298,7 @@ export default function ResumeParserPage() {
             </div>
 
             {parsedResume && (
-              <div className="bg-white dark:bg-gray-800/90 backdrop-blur-lg rounded-2xl shadow-xl overflow-hidden border border-gray-200 dark:border-gray-700 transition-all duration-300 animate-fade-in">
+              <div ref={parsedResumeRef} className="bg-white dark:bg-gray-800/90 backdrop-blur-lg rounded-2xl shadow-xl overflow-hidden border border-gray-200 dark:border-gray-700 transition-all duration-300 animate-fade-in">
                 <div className="p-6">
                   <div className="flex items-center justify-between mb-6">
                     <div className="flex items-center gap-3">
